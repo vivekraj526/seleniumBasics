@@ -1,0 +1,148 @@
+> set key/value property according to the browser 
+System.setProperty(key, value); //mentioned in the scenario
+
+> open browser instance
+
+driver = new FirefoxDriver();
+
+> implicit wait for 12 seconds
+
+driver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
+
+> open application
+
+Driver.get(url); //mentioned in the scenario
+
+> maximize the browser
+
+driver.Manage().Window.Maximize();
+
+
+> Screenshot
+//Typecast the driver reference variable with TakesScreenshot to access the methods from TakesScreenshot interface.
+//getScreenshotAs method will take argument for the output type of the file
+
+File scrFile= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+
+	//using FileUtils class copy the generated screenshot file to any location
+
+	FileUtils.copyFile(scrFile, new File(“path”)); //path is given in the scenario
+
+> click on link, checkbox, radio button
+
+driver.findelement(by.locator(“ ”)).click();
+
+> fetch the options present in dropdown n print them in console
+
+WebElement dd= driver.findelement(by.locator(“ ”));
+Select s=new Select(dd);
+List<WebElement> alloptn = s.getOptions();
+int count= alloptn.size();
+for(int i=0; i<count; i++){
+	WebElement optn= alloptn.get(i);
+String text= optn.getText();
+System.out.println(“Printing option in caonsole : “ + text);
+
+}
+
+
+
+> verify the message displayed in alert box and accept it
+
+driver.switchTo().alert();	
+String actulmsg= driver.findelement(by.locator(“ ”)).getText();
+
+System.out.println(actulmsg);
+String expmsg= “My Dashboard”;
+Assert.assertEquals(actulmsg ,expmsg);
+driver.switchTo().alert().accept();
+
+> fetch the title of newly opened window and verify the desired page
+
+Set<String> wh= driver.getWindowHandles();
+System.out.println(“No. of opened  windows :”+wh.size());
+Integer temp=0;
+String msg=null;
+
+For(String str:wh){
+	Driver.switchTo().window(str);
+	String title=driver.getTitle();
+	//check whether the url post switch is in desired page
+	If(!title.equals(“Title name”){
+		temp=1;
+		msg= “window found”;
+		break;
+	} else {
+		temp =0;
+}
+}
+
+> interaction with web tables
+Example:
+//fetch the account details table
+
+WebElement tblAccountDetails= driver.findElement(By.locator(“”));
+
+//fetch all the rows inside the Account details table using tr tag & store it in row list
+
+List<WebElement> rows = tblAccountDetails.findElement(By.locator(“tr”));
+
+	//Print no. of rows
+	
+	System.out.println(“Number of rows : “ + rows.size());
+
+	//Iterate over all rows
+	
+for(WebElement row : rows) {
+
+//find all the cols inside the particular row using the td tag
+
+		List<WebElement> cols = row.findElement(By.locator(“td”));
+
+	//Iterate over all the columns inside the particular row
+
+	for(WebElement col : clos) {
+	
+		//Print cell value
+			System.out.println(“Column value : “ + col.getText());
+		}		
+}
+> Excel reading
+
+String path= “ ”;  ////path is given in the scenario
+FileInputStream fs=new FileInputStream(path);
+HSSFWorkBook wb=new HSSPWorkBook(fs);
+HSSFSheet s=wb.getSheet(“Sheet1”);
+Int rc=s.getLastRowNum() – s.getFirstRowNum();
+For(int i=1; i<=rc; i++){
+driver.findelement(by.locator(“ ”)).sendkeys(s.getRow(i).getCell(0).getStringCellValue());
+driver.findelement(by.locator(“ ”)).sendkeys(s.getRow(i).getCell(1).getStringCellValue());
+	driver.findelement(by.locator(“ ”)).click();
+}
+Wb.close();
+
+> Excel writing
+
+String path= “ ”;  ////path is given in the scenario
+FileInputStream fs=new FileInputStream(path);
+HSSFWorkBook wb=new HSSPWorkBook(fs);
+HSSFSheet s=wb.getSheet(“Sheet1”);
+Int rc=s.getLastRowNum() – s.getFirstRowNum();
+For(int i=1; i<=rc; i++){
+driver.findelement(by.locator(“ ”)).sendkeys(s.getRow(i).getCell(0).getStringCellValue());
+driver.findelement(by.locator(“ ”)).sendkeys(s.getRow(i).getCell(1).getStringCellValue());
+	driver.findelement(by.locator(“ ”)).click();
+	String msg= driver.findelement(by.locator(“ ”)).getText();
+	Row newRow= s.getRow(i);
+	Cell cell=newRow.createCell(2);
+Cell.setCellValue(msg);
+}
+FileOutputStream fos=new FileOutputStream(path);
+Wb.write(fos);
+Wb.close();
+
+> use appropriate tear down method to quit the browser
+
+ public void teardown(){
+driver.close();
+}
